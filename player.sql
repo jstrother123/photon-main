@@ -1,10 +1,3 @@
-
--- Create database
-CREATE DATABASE game;
-
---Connect to database
-\c game
-
 --Create table
 CREATE TABLE player (
   id INT,
