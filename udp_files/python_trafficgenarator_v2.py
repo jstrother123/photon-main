@@ -31,7 +31,7 @@ received_data = ' '
 while received_data != '202':
 	received_data, address = UDPServerSocketReceive.recvfrom(bufferSize)
 	received_data = received_data.decode('utf-8')
-	print 'Received from game software: ', received_data
+	print ('Received from game software: '), received_data
 print ('')
 
 # create events, random player and order
@@ -58,7 +58,7 @@ while True:
 	# receive answer from game softare
 	received_data, address = UDPServerSocketReceive.recvfrom(bufferSize)
 	received_data = received_data.decode('utf-8')
-	print 'Received from game software: ', received_data
+	print ('Received from game software: '), received_data
 	print ('')
 	if received_data == '221':
 		break;
