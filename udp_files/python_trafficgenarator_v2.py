@@ -24,14 +24,14 @@ UDPClientSocketTransmit = socket.socket(family=socket.AF_INET, type=socket.SOCK_
 UDPServerSocketReceive.bind(serverAddressPort)
 
 # wait for start from game software
-print ('')
-print ('waiting for start from game_software')
+print ("")
+print ("waiting for start from game_software")
 
 received_data = ' '
 while received_data != '202':
 	received_data, address = UDPServerSocketReceive.recvfrom(bufferSize)
 	received_data = received_data.decode('utf-8')
-	print ('Received from game software: '), received_data
+	print ("Received from game software: " + received_data)
 print ('')
 
 # create events, random player and order
@@ -52,13 +52,13 @@ while True:
 	else:
 		message = str(greenplayer) + ":" + str(redplayer)
 
-	print(message)
+	print("transmitting to game: " + message)
 	
 	UDPClientSocketTransmit.sendto(str.encode(str(message)), clientAddressPort)
 	# receive answer from game softare
 	received_data, address = UDPServerSocketReceive.recvfrom(bufferSize)
 	received_data = received_data.decode('utf-8')
-	print ('Received from game software: '), received_data
+	print ("Received from game software: " + received_data)
 	print ('')
 	if received_data == '221':
 		break;
