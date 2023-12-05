@@ -35,6 +35,7 @@ while received_data != '202':
 print ('')
 
 # create events, random player and order
+counter = 0
 
 while True:
 	if random.randint(1,2) == 1:
@@ -51,15 +52,24 @@ while True:
 		message = str(redplayer) + ":" + str(greenplayer)
 	else:
 		message = str(greenplayer) + ":" + str(redplayer)
-
+		
+	# after 10 iterations, send base hit
+	if counter == 10:
+		message = str(redplayer) + ":43"
+	if counter == 20:
+		message = str(greenplayer) + ":53"
+		
 	print("transmitting to game: " + message)
 	
 	UDPClientSocketTransmit.sendto(str.encode(str(message)), clientAddressPort)
 	# receive answer from game softare
+	
+	
 	received_data, address = UDPServerSocketReceive.recvfrom(bufferSize)
 	received_data = received_data.decode('utf-8')
 	print ("Received from game software: " + received_data)
 	print ('')
+	counter = counter + 1;
 	if received_data == '221':
 		break;
 	time.sleep(random.randint(1,3))
