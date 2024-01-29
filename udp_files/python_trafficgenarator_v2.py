@@ -3,8 +3,8 @@ import random
 import time
 
 bufferSize  = 1024
-serverAddressPort   = ("127.0.0.1", 7501)
-clientAddressPort   = ("127.0.0.1", 7500)
+serverAddressPort   = ("127.0.0.1", 7500)
+clientAddressPort   = ("127.0.0.1", 7501)
 
 
 print('this program will generate some test traffic for 2 players on the red ')
