@@ -5,6 +5,6 @@ CREATE TABLE player (
 );
 
 --Place first record into table
-INSERT INTO player (id, first_name, last_name, codename)
-VALUES (1, 'Jim', 'Strother', 'Opus');
+INSERT INTO player (id, codename)
+VALUES (1, 'Opus');
 
