@@ -74,7 +74,8 @@ splash_screen.configure(background="black")
 splash_screen.geometry("800x600")
 
 # splash screen image
-image = Image.open("C:/Users/shane/Desktop/logo.jpg") 
+# image = Image.open("C:/Users/shane/Desktop/logo.jpg") 
+image = Image.open("logo.jpg")
 # once github created -> "images\logo.jpg"
 logo = ImageTk.PhotoImage(image)
 logo_label = tk.Label(splash_screen, image=logo)
