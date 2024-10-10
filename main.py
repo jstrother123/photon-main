@@ -223,7 +223,7 @@ image = Image.open("logo.jpg")
 # once github created -> "images\logo.jpg"
 
 # Resize the image to fit within 800x600
-max_width, max_height = 600, 400  # Keep the image within these dimensions to leave space for text/buttons
+max_width, max_height = 800, 600  # Keep the image within these dimensions to leave space for text/buttons
 image = image.resize((max_width, max_height), Image.Resampling.LANCZOS)
 
 logo = ImageTk.PhotoImage(image)
