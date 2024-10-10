@@ -127,6 +127,10 @@ def open_player_entry():
 
     populate_players(red_team_frame, green_team_frame)
 
+    # Bind F12 to clear entries
+    player_entry.bind("<F12>", lambda event: clear_player_entries())
+
+
     player_entry.mainloop()
 
 # Function to add a player to the database
@@ -196,6 +200,15 @@ def populate_players(red_team_frame, green_team_frame):
         if conn:
             conn.close()
 
+# Function to clear player entries
+def clear_player_entries(): 
+    for entry_pair in red_team_entries:
+        entry_pair[0].delete(0, END)  # Clear ID entry
+        entry_pair[1].delete(0, END)  # Clear Codename entry
+
+    for entry_pair in green_team_entries:
+        entry_pair[0].delete(0, END)  # Clear ID entry
+        entry_pair[1].delete(0, END)  # Clear Codename entry
 
 # splash screen window
 splash_screen = tk.Tk()
