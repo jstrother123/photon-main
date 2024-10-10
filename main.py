@@ -221,6 +221,11 @@ splash_screen.geometry("800x600")
 # splash screen image
 image = Image.open("logo.jpg")
 # once github created -> "images\logo.jpg"
+
+# Resize the image to fit within 800x600
+max_width, max_height = 600, 400  # Keep the image within these dimensions to leave space for text/buttons
+image = image.resize((max_width, max_height), Image.ANTIALIAS)
+
 logo = ImageTk.PhotoImage(image)
 logo_label = tk.Label(splash_screen, image=logo)
 logo_label.pack()
