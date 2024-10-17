@@ -224,7 +224,7 @@ image = Image.open("logo.jpg")
 
 # Resize the image to fit within 800x600
 max_width, max_height = 800, 600  # Keep the image within these dimensions to leave space for text/buttons
-image = image.resize((max_width, max_height), Image.Resampling.LANCZOS)
+image = image.resize((max_width, max_height), Image.LANCZOS)
 
 logo = ImageTk.PhotoImage(image)
 logo_label = tk.Label(splash_screen, image=logo)
