@@ -90,7 +90,7 @@ def open_player_entry():
     green_team_entries = []
 
     # Red players
-    for i in range(19):
+    for i in range(15):
         player_label = tk.Label(red_team_frame, text=f"{i+1}", bg="darkred", fg="white", font=("Arial", 12))
         player_label.grid(row=i, column=0, sticky="e", padx=5, pady=2)
        
@@ -103,7 +103,7 @@ def open_player_entry():
         red_team_entries.append((id_entry, codename_entry))
 
     # Green players
-    for i in range(19):
+    for i in range(15):
         player_label = tk.Label(green_team_frame, text=f"{i+1}", bg="darkgreen", fg="white", font=("Arial", 12))
         player_label.grid(row=i, column=0, sticky="e", padx=5, pady=2)
        
