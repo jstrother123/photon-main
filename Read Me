@@ -5,6 +5,8 @@ Downloaded:
 -import pillow and tk (tkinter)
 For start up screen: python3 main.py to get the player entry screen and start screen to appear, and get the main loop running. 
 
+To run UDP as well, python3 main.py & python3 UDP_Server.py
+
 
 Student Name	 |    GitHub Name
 -----------------|------------------
