@@ -180,14 +180,14 @@ def populate_players(red_team_frame, green_team_frame):
         for widget in red_team_frame.winfo_children():
             widget.destroy()
 
-        for i, player in enumerate(players[:19]):
+        for i, player in enumerate(players[:15]):
             player_label = tk.Label(red_team_frame, text=f"{i+1}. {player[1]}", bg="darkred", fg="white", font=("Arial", 12))
             player_label.grid(row=i, column=0, sticky="ew", padx=5, pady=2)
 
         for widget in green_team_frame.winfo_children():
             widget.destroy()
 
-        for i, player in enumerate(players[19:]):
+        for i, player in enumerate(players[15:]):
             player_label = tk.Label(green_team_frame, text=f"{i+1}. {player[1]}", bg="darkgreen", fg="white", font=("Arial", 12))
             player_label.grid(row=i, column=0, sticky="ew", padx=5, pady=2)
 
