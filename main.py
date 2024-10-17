@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import simpledialog
 from PIL import Image, ImageTk
 import psycopg2
+import UDP_Client
 
 # Store currently added players for this session
 current_players = []
@@ -89,7 +90,7 @@ def open_player_entry():
 
     # Add Player Button
     add_player_button = tk.Button(
-        player_entry, text="Add Player", font=("Arial", 12), bg="darkgreen", fg="white",
+        player_entry, text="Add Player", font=("Arial", 12), bg="black", fg="white",
         command=lambda: search_or_add_player(id_entry.get(), red_team_frame, green_team_frame)
     )
     add_player_button.grid(row=4, column=0, columnspan=2, pady=10)
@@ -122,7 +123,8 @@ def search_or_add_player(player_id, red_team_frame, green_team_frame):
                 cursor.execute("INSERT INTO players (id, codename) VALUES (%s, %s);", (player_id, codename))
                 conn.commit()
                 current_players.append((player_id, codename))
-
+                UDP_Client.passInfo(player_id, codename)
+        
         populate_players(red_team_frame, green_team_frame)
 
     except Exception as error:
