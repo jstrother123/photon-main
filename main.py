@@ -11,27 +11,20 @@ current_players = []
 player_entries = []
 
 def open_player_entry():
-    global red_team_frame, green_team_frame  # Declare frames as global to access in other functions
+    global red_team_frame, green_team_frame, countdown_label  # Declare variables as global for access
 
     splash_screen.destroy()
-    # Define connection parameters
+    
     connection_params = {
         'dbname': 'photon',
         'user': 'student',
-        #'password': 'student',
-        #'host': 'localhost',
-        #'port': '5432'
     }
 
     try:
-        # Connect to PostgreSQL
         conn = psycopg2.connect(**connection_params)
         cursor = conn.cursor()
 
-        # Execute a query
         cursor.execute("SELECT version();")
-        
-        # Fetch and display the result
         version = cursor.fetchone()
         print(f"Connected to - {version}")
         
@@ -41,7 +34,6 @@ def open_player_entry():
         rows = cursor.fetchall()
         for row in rows:
             print(row)
-
 
     except Exception as error:
         print(f"Error connecting to PostgreSQL database: {error}")
@@ -56,7 +48,7 @@ def open_player_entry():
     player_entry = tk.Tk()
     player_entry.title("Player Entry Screen")
     player_entry.configure(background="black")
-    player_entry.geometry("800x600")
+    player_entry.geometry("800x700")
 
     # Team Labels
     red_team_label = tk.Label(player_entry, text="RED TEAM", bg="darkred", fg="white", font=("Arial", 16))
@@ -78,8 +70,6 @@ def open_player_entry():
 
     id_entry = tk.Entry(player_entry, font=("Arial", 12), width=20)
     id_entry.grid(row=3, column=0, columnspan=2, pady=5)
-
-    # Store the player entry in the dynamic list
     player_entries.append(id_entry)
 
     # Add Player Button
@@ -89,13 +79,30 @@ def open_player_entry():
     )
     add_player_button.grid(row=4, column=0, columnspan=2, pady=10)
 
-    # Bind F12 key to clear all dynamic player entries
-    player_entry.bind("<F12>", lambda event: clear_player_entries())
+    # Countdown Timer Label (Initially Hidden)
+    countdown_label = tk.Label(player_entry, text="", bg="black", fg="white", font=("Arial", 20))
+    countdown_label.grid(row=5, column=0, columnspan=2, pady=10)
 
-    # Populate the player grid with placeholders initially
+    # Bind F12 to clear entries and Fn + F5 to start the countdown
+    player_entry.bind("<F12>", lambda event: clear_player_entries())
+    player_entry.bind("<F5>", lambda event: start_countdown(30))  # Start a 30-second countdown
+
     populate_players(red_team_frame, green_team_frame)
 
     player_entry.mainloop()
+
+def start_countdown(seconds):
+    " 30-second countdown timer"
+    def countdown():
+        nonlocal seconds
+        if seconds > 0:
+            countdown_label.config(text=f"Time Remaining: {seconds} seconds")
+            seconds -= 1
+            countdown_label.after(1000, countdown)  # Call countdown again after 1 second
+        else:
+            countdown_label.config(text="Game is about to begin!")
+
+    countdown()  # Start the countdown
 
 def search_or_add_player(player_id, red_team_frame, green_team_frame):
     connection_params = {
@@ -107,15 +114,12 @@ def search_or_add_player(player_id, red_team_frame, green_team_frame):
         conn = psycopg2.connect(**connection_params)
         cursor = conn.cursor()
 
-        # Search for the player by ID in the database
         cursor.execute("SELECT id, codename FROM players WHERE id = %s;", (player_id,))
         player = cursor.fetchone()
 
         if player:
-            # If found, display the player in the appropriate frame
             current_players.append(player)
         else:
-            # If not found, prompt for codename
             codename = simpledialog.askstring("Input", "Enter a codename for the new player:")
             if codename:
                 cursor.execute("INSERT INTO players (id, codename) VALUES (%s, %s);", (player_id, codename))
@@ -123,7 +127,6 @@ def search_or_add_player(player_id, red_team_frame, green_team_frame):
                 current_players.append((player_id, codename))
                 UDP_Client.passInfo(player_id, codename, 1)
 
-        # Refresh the player table
         populate_players(red_team_frame, green_team_frame)
 
     except Exception as error:
@@ -136,56 +139,48 @@ def search_or_add_player(player_id, red_team_frame, green_team_frame):
             conn.close()
 
 def populate_players(red_team_frame, green_team_frame):
-    # Clear any existing widgets in the frames
     for widget in red_team_frame.winfo_children():
         widget.destroy()
     for widget in green_team_frame.winfo_children():
         widget.destroy()
 
-    # Populate frames with players or placeholders
     for i in range(15):
-        # Handle Red Team Players
         if i < len(current_players[:15]):
             player = current_players[i]
             text = f"ID: {player[0]}  Codename: {player[1]}"
         else:
-            text = "ID: ---  Codename: ---"  # Placeholder
+            text = "ID: ---  Codename: ---"
 
         red_player_label = tk.Label(
             red_team_frame, text=text, bg="darkred", fg="white", font=("Arial", 12)
         )
         red_player_label.grid(row=i, column=0, sticky="ew", padx=5, pady=2)
 
-        # Handle Green Team Players
         if i < len(current_players[15:]):
             player = current_players[15 + i]
             text = f"ID: {player[0]}  Codename: {player[1]}"
         else:
-            text = "ID: ---  Codename: ---"  # Placeholder
+            text = "ID: ---  Codename: ---"
 
         green_player_label = tk.Label(
             green_team_frame, text=text, bg="darkgreen", fg="white", font=("Arial", 12)
         )
         green_player_label.grid(row=i, column=0, sticky="ew", padx=5, pady=2)
 
-    # Configure frames to expand with the window size
     red_team_frame.grid_rowconfigure(list(range(15)), weight=1)
     green_team_frame.grid_rowconfigure(list(range(15)), weight=1)
     red_team_frame.grid_columnconfigure(0, weight=1)
     green_team_frame.grid_columnconfigure(0, weight=1)
 
 def clear_player_entries():
-    # Function to clear all dynamically created player entries
     for entry in player_entries:
         entry.delete(0, 'end')
 
-# Splash Screen Setup
 splash_screen = tk.Tk()
 splash_screen.title("Splash Screen")
 splash_screen.configure(background="black")
 splash_screen.geometry("800x600")
 
-# Load and display splash screen image
 image = Image.open("logo.jpg")
 image = image.resize((800, 600), Image.LANCZOS)
 logo = ImageTk.PhotoImage(image)
@@ -193,7 +188,5 @@ logo = ImageTk.PhotoImage(image)
 logo_label = tk.Label(splash_screen, image=logo)
 logo_label.pack()
 
-# Display splash screen for 3 seconds, then show player entry screen
 splash_screen.after(3000, open_player_entry)
-
 splash_screen.mainloop()
