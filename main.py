@@ -7,6 +7,9 @@ import UDP_Client
 # Store currently added players for this session
 current_players = []
 
+# Store dynamically created player entries for clearing them later
+player_entries = []
+
 def open_player_entry():
     global red_team_frame, green_team_frame  # Declare frames as global to access in other functions
 
@@ -87,6 +90,9 @@ def open_player_entry():
 
     id_entry = tk.Entry(player_entry, font=("Arial", 12), width=20)
     id_entry.grid(row=3, column=0, columnspan=2, pady=5)
+    
+    # Store the player entry in the dynamic list
+    player_entries.append(id_entry)
 
     # Add Player Button
     add_player_button = tk.Button(
@@ -95,6 +101,7 @@ def open_player_entry():
     )
     add_player_button.grid(row=4, column=0, columnspan=2, pady=10)
 
+    # Bind F12 key to clear all dynamic player entries
     player_entry.bind("<F12>", lambda event: clear_player_entries())
 
     player_entry.mainloop()
@@ -164,6 +171,11 @@ def populate_players(red_team_frame, green_team_frame):
             bg="darkgreen", fg="white", font=("Arial", 12)
         )
         player_label.grid(row=i, column=0, sticky="ew", padx=5, pady=2)
+
+def clear_player_entries():
+    # Function to clear all dynamically created player entries
+    for entry in player_entries:
+        entry.delete(0, 'end')
 
 # Splash Screen Setup
 splash_screen = tk.Tk()
