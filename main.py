@@ -115,7 +115,7 @@ def start_countdown(seconds):
             timer_label.after(1000, countdown)  # Continue countdown every second
         else:
             timer_label.config(text="Game is about to begin!")
-            countdown_window.after(1000, lambda: [countdown_window.destroy(), openGameActionScreen()])  # Close the window and open the game screen
+            countdown_window.after(1000, lambda: [countdown_window.destroy(), openGameActionScreen(current_players)])  # Close the window and open the game screen
 
     countdown()  # Start the countdown
 
