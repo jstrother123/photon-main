@@ -3,6 +3,8 @@ from tkinter import simpledialog
 from PIL import Image, ImageTk
 import psycopg2
 import UDP_Client
+import GameActionScreen
+from GameActionScreen import openGameActionScreen
 
 # Store currently added players for this session
 current_players = []
@@ -86,23 +88,38 @@ def open_player_entry():
     # Bind F12 to clear entries and Fn + F5 to start the countdown
     player_entry.bind("<F12>", lambda event: clear_player_entries())
     player_entry.bind("<F5>", lambda event: start_countdown(30))  # Start a 30-second countdown
+    # When pressing the F5 key, call the openGameActionScreen() method
+     
 
     populate_players(red_team_frame, green_team_frame)
 
     player_entry.mainloop()
 
 def start_countdown(seconds):
-    " 30-second countdown timer"
+    """30-second countdown timer in a separate window."""
+    # Create a new window for the countdown
+    countdown_window = tk.Toplevel()
+    countdown_window.title("Countdown Timer")
+    countdown_window.geometry("500x300")
+    countdown_window.configure(background="black")
+
+    # Label to display the countdown timer
+    timer_label = tk.Label(countdown_window, text="", bg="black", fg="white", font=("Arial", 20))
+    timer_label.pack(expand=True, padx=20, pady=20)
+
     def countdown():
         nonlocal seconds
         if seconds > 0:
-            countdown_label.config(text=f"Time Remaining: {seconds} seconds")
+            timer_label.config(text=f"Time Remaining: {seconds} seconds")
             seconds -= 1
-            countdown_label.after(1000, countdown)  # Call countdown again after 1 second
+            timer_label.after(1000, countdown)  # Continue countdown every second
         else:
-            countdown_label.config(text="Game is about to begin!")
+            timer_label.config(text="Game is about to begin!")
+            countdown_window.after(1000, lambda: [countdown_window.destroy(), openGameActionScreen()])  # Close the window and open the game screen
 
     countdown()  # Start the countdown
+
+
 
 def search_or_add_player(player_id, red_team_frame, green_team_frame):
     connection_params = {
