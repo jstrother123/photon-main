@@ -164,9 +164,9 @@ def populate_players(red_team_frame, green_team_frame):
     for i in range(15):
         if i < len(current_players[:15]):
             player = current_players[i]
-            text = f"ID: {player[0]}  Codename: {player[1]}"
+            text = f"ID: {player[0]}  Codename: {player[1]}  EquipNum: ---"
         else:
-            text = "ID: ---  Codename: ---"
+            text = "ID: ---  Codename: ---  EquipNum: ---"
 
         red_player_label = tk.Label(
             red_team_frame, text=text, bg="darkred", fg="white", font=("Arial", 12)
@@ -175,9 +175,9 @@ def populate_players(red_team_frame, green_team_frame):
 
         if i < len(current_players[15:]):
             player = current_players[15 + i]
-            text = f"ID: {player[0]}  Codename: {player[1]}"
+            text = f"ID: {player[0]}  Codename: {player[1]}  EquipNum: ---"
         else:
-            text = "ID: ---  Codename: ---"
+            text = "ID: ---  Codename: ---  EquipNum: ---"
 
         green_player_label = tk.Label(
             green_team_frame, text=text, bg="darkgreen", fg="white", font=("Arial", 12)
