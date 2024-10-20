@@ -14,3 +14,10 @@ Chloe Shepherd	 |    chloeshepherdd
 Yi Wang	         |    yyyyyyyyyi09
 Sandy Wahba      |   	sandy357w
 Michaela Pascall |    michaelapascall
+
+
+
+# When pressing the F5 key, call the openGameActionScreen() method
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_F5:
+                openGameActionScreen()
