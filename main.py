@@ -128,6 +128,24 @@ def start_countdown(seconds):
 
     countdown()  # Start the countdown
 
+def clear_player_entries():
+    # Clear the player ID entry fields
+    for entry in player_entries:
+        entry.delete(0, 'end')
+
+    # Clear the current players list
+    current_players.clear()
+
+    # Remove all player information from red and green team frames
+    for widget in red_team_frame.winfo_children():
+        widget.destroy()
+
+    for widget in green_team_frame.winfo_children():
+        widget.destroy()
+
+    # Repopulate the frames with empty player slots
+    populate_players(red_team_frame, green_team_frame)
+
 
 
 def search_or_add_player(player_id, red_team_frame, green_team_frame):
