@@ -143,8 +143,24 @@ def clear_player_entries():
     for widget in green_team_frame.winfo_children():
         widget.destroy()
 
-    # Repopulate the frames with empty player slots
-    populate_players(red_team_frame, green_team_frame)
+    # Optionally, you might want to repopulate the frames with empty placeholders
+    # This would create empty labels for the teams, for example:
+    for i in range(15):
+        red_player_label = tk.Label(
+            red_team_frame, text="ID: ---  Codename: ---  EquipNum: ---", bg="darkred", fg="white", font=("Arial", 12)
+        )
+        red_player_label.grid(row=i, column=0, sticky="ew", padx=5, pady=2)
+
+        green_player_label = tk.Label(
+            green_team_frame, text="ID: ---  Codename: ---  EquipNum: ---", bg="darkgreen", fg="white", font=("Arial", 12)
+        )
+        green_player_label.grid(row=i, column=0, sticky="ew", padx=5, pady=2)
+
+    # Ensure the frames have proper layout
+    red_team_frame.grid_rowconfigure(list(range(15)), weight=1)
+    green_team_frame.grid_rowconfigure(list(range(15)), weight=1)
+    red_team_frame.grid_columnconfigure(0, weight=1)
+    green_team_frame.grid_columnconfigure(0, weight=1)
 
 
 
