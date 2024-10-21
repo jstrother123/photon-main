@@ -25,7 +25,8 @@ equipId = simpledialog.askstring("Input", "Enter the equipment id for the new pl
 
 then change the next line be:
 cursor.execute("INSERT INTO players (id, codename, equipId) VALUES (%s, %s, %s);", (player_id, codename, equipId))
+conn.commit()
+current_players.append((player_id, codename, equipId))
 
 also update for the udp transmission:
-current_players.append((player_id, codename, equipId))
 UDP_Client.passInfo(player_id, codename, equipId)
