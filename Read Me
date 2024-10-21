@@ -20,9 +20,12 @@ Yi Wang	         |    yyyyyyyyyi09
 Sandy Wahba      |   	sandy357w
 Michaela Pascall |    michaelapascall
 
+# Before 151, add
+equipId = simpledialog.askstring("Input", "Enter the equipment id for the new player:")
 
+then change the next line be:
+cursor.execute("INSERT INTO players (id, codename, equipId) VALUES (%s, %s, %s);", (player_id, codename, equipId))
 
-# When pressing the F5 key, call the openGameActionScreen() method
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_F5:
-                openGameActionScreen()
+also update for the udp transmission:
+current_players.append((player_id, codename, equipId))
+UDP_Client.passInfo(player_id, codename, equipId)
