@@ -13,10 +13,10 @@ current_players = []
 player_entries = []
 
 def open_player_entry():
-    global red_team_frame, green_team_frame, countdown_label  # Declare variables as global for access
+    global red_team_frame, green_team_frame, countdown_label, id_entry
 
     splash_screen.destroy()
-    
+
     connection_params = {
         'dbname': 'photon',
         'user': 'student',
@@ -25,13 +25,10 @@ def open_player_entry():
     try:
         conn = psycopg2.connect(**connection_params)
         cursor = conn.cursor()
-
         cursor.execute("SELECT version();")
         version = cursor.fetchone()
         print(f"Connected to - {version}")
-        
-        conn.commit()
-        
+
         cursor.execute("SELECT * FROM players;")
         rows = cursor.fetchall()
         for row in rows:
@@ -72,6 +69,8 @@ def open_player_entry():
 
     id_entry = tk.Entry(player_entry, font=("Arial", 12), width=20)
     id_entry.grid(row=3, column=0, columnspan=2, pady=5)
+
+    # Store the entry in the player_entries list for easy clearing
     player_entries.append(id_entry)
 
     # Add Player Button
@@ -80,6 +79,17 @@ def open_player_entry():
         command=lambda: search_or_add_player(id_entry.get(), red_team_frame, green_team_frame)
     )
     add_player_button.grid(row=4, column=0, columnspan=2, pady=10)
+    # Instruction Labels
+    f5_label = tk.Label(
+        player_entry, text="Press F5 to enter play action screen", bg="black", fg="white", font=("Arial", 10)
+    )
+    f5_label.grid(row=5, column=0, columnspan=2, pady=5)
+    f12_label = tk.Label(
+        player_entry, text="Press F12 to clear player entries", bg="black", fg="white", font=("Arial", 10)
+    )
+    f12_label.grid(row=6, column=0, columnspan=2, pady=5)
+    
+    
 
     # Countdown Timer Label (Initially Hidden)
     countdown_label = tk.Label(player_entry, text="", bg="black", fg="white", font=("Arial", 20))
@@ -87,13 +97,12 @@ def open_player_entry():
 
     # Bind F12 to clear entries and Fn + F5 to start the countdown
     player_entry.bind("<F12>", lambda event: clear_player_entries())
-    player_entry.bind("<F5>", lambda event: start_countdown(30))  # Start a 30-second countdown
-    # When pressing the F5 key, call the openGameActionScreen() method
-     
+    player_entry.bind("<F5>", lambda event: start_countdown(30))
 
     populate_players(red_team_frame, green_team_frame)
 
     player_entry.mainloop()
+
 
 def start_countdown(seconds):
     """30-second countdown timer in a separate window."""
