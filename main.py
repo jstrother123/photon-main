@@ -144,7 +144,6 @@ def clear_player_entries():
         widget.destroy()
 
     # Optionally, you might want to repopulate the frames with empty placeholders
-    # This would create empty labels for the teams, for example:
     for i in range(15):
         red_player_label = tk.Label(
             red_team_frame, text="ID: ---  Codename: ---  EquipNum: ---", bg="darkred", fg="white", font=("Arial", 12)
@@ -161,7 +160,6 @@ def clear_player_entries():
     green_team_frame.grid_rowconfigure(list(range(15)), weight=1)
     red_team_frame.grid_columnconfigure(0, weight=1)
     green_team_frame.grid_columnconfigure(0, weight=1)
-
 
 
 def search_or_add_player(player_id, red_team_frame, green_team_frame):
