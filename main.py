@@ -230,10 +230,6 @@ def populate_players(red_team_frame, green_team_frame):
     red_team_frame.grid_columnconfigure(0, weight=1)
     green_team_frame.grid_columnconfigure(0, weight=1)
 
-def clear_player_entries():
-    for entry in player_entries:
-        entry.delete(0, 'end')
-
 splash_screen = tk.Tk()
 splash_screen.title("Splash Screen")
 splash_screen.configure(background="black")
