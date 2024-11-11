@@ -12,6 +12,10 @@ current_players = []
 # Store dynamically created player entries for clearing them later
 player_entries = []
 
+# Store players for each team separately
+red_team = []
+green_team = []
+
 def open_player_entry():
     global red_team_frame, green_team_frame, countdown_label, id_entry
 
@@ -79,6 +83,7 @@ def open_player_entry():
         command=lambda: search_or_add_player(id_entry.get(), red_team_frame, green_team_frame)
     )
     add_player_button.grid(row=4, column=0, columnspan=2, pady=10)
+    
     # Instruction Labels
     f5_label = tk.Label(
         player_entry, text="Press F5 to enter play action screen", bg="black", fg="white", font=("Arial", 10)
@@ -89,8 +94,6 @@ def open_player_entry():
     )
     f12_label.grid(row=6, column=0, columnspan=2, pady=5)
     
-    
-
     # Countdown Timer Label (Initially Hidden)
     countdown_label = tk.Label(player_entry, text="", bg="black", fg="white", font=("Arial", 20))
     countdown_label.grid(row=5, column=0, columnspan=2, pady=10)
@@ -124,7 +127,7 @@ def start_countdown(seconds):
             timer_label.after(1000, countdown)  # Continue countdown every second
         else:
             timer_label.config(text="Game is about to begin!")
-            countdown_window.after(1000, lambda: [countdown_window.destroy(), openGameActionScreen(current_players)])  # Close the window and open the game screen
+            countdown_window.after(1000, lambda: [countdown_window.destroy(), openGameActionScreen(red_team, green_team)])  # Close the window and open the game screen
 
     countdown()  # Start the countdown
 
@@ -133,8 +136,10 @@ def clear_player_entries():
     for entry in player_entries:
         entry.delete(0, 'end')
 
-    # Clear the current players list
+    # Clear the current players list and team lists
     current_players.clear()
+    red_team.clear()
+    green_team.clear()
 
     # Remove all player information from red and green team frames
     for widget in red_team_frame.winfo_children():
@@ -176,14 +181,22 @@ def search_or_add_player(player_id, red_team_frame, green_team_frame):
         player = cursor.fetchone()
 
         if player:
-            current_players.append(player)
+            team_choice = simpledialog.askstring("Team Selection", "Choose team for player (Red/Green):").strip().lower()
+            if team_choice == 'red':
+                red_team.append(player)
+            elif team_choice == 'green':
+                green_team.append(player)
         else:
             codename = simpledialog.askstring("Input", "Enter a codename for the new player:")
             if codename:
                 cursor.execute("INSERT INTO players (id, codename) VALUES (%s, %s);", (player_id, codename))
                 conn.commit()
-                current_players.append((player_id, codename))
-                UDP_Client.passInfo(player_id, codename, 1)
+                player = (player_id, codename)
+                team_choice = simpledialog.askstring("Team Selection", "Choose team for player (Red/Green):").strip().lower()
+                if team_choice == 'red':
+                    red_team.append(player)
+                elif team_choice == 'green':
+                    green_team.append(player)
 
         populate_players(red_team_frame, green_team_frame)
 
@@ -197,38 +210,44 @@ def search_or_add_player(player_id, red_team_frame, green_team_frame):
             conn.close()
 
 def populate_players(red_team_frame, green_team_frame):
+    # Clear existing widgets in each team frame
     for widget in red_team_frame.winfo_children():
         widget.destroy()
     for widget in green_team_frame.winfo_children():
         widget.destroy()
 
+    # Display players in Red Team
     for i in range(15):
-        if i < len(current_players[:15]):
-            player = current_players[i]
+        if i < len(red_team):
+            player = red_team[i]
             text = f"ID: {player[0]}  Codename: {player[1]}  EquipNum: ---"
         else:
-            text = "ID: ---  Codename: ---  EquipNum: ---"
+            text = "ID: ---  Codename: ---  EquipNum: ---"  # Placeholder text
 
         red_player_label = tk.Label(
             red_team_frame, text=text, bg="darkred", fg="white", font=("Arial", 12)
         )
         red_player_label.grid(row=i, column=0, sticky="ew", padx=5, pady=2)
 
-        if i < len(current_players[15:]):
-            player = current_players[15 + i]
+    # Display players in Green Team
+    for i in range(15):
+        if i < len(green_team):
+            player = green_team[i]
             text = f"ID: {player[0]}  Codename: {player[1]}  EquipNum: ---"
         else:
-            text = "ID: ---  Codename: ---  EquipNum: ---"
+            text = "ID: ---  Codename: ---  EquipNum: ---"  # Placeholder text
 
         green_player_label = tk.Label(
             green_team_frame, text=text, bg="darkgreen", fg="white", font=("Arial", 12)
         )
         green_player_label.grid(row=i, column=0, sticky="ew", padx=5, pady=2)
 
+    # Configure grid layout for each team frame
     red_team_frame.grid_rowconfigure(list(range(15)), weight=1)
     green_team_frame.grid_rowconfigure(list(range(15)), weight=1)
     red_team_frame.grid_columnconfigure(0, weight=1)
     green_team_frame.grid_columnconfigure(0, weight=1)
+
 
 splash_screen = tk.Tk()
 splash_screen.title("Splash Screen")
