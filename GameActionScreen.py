@@ -1,7 +1,7 @@
 import pygame
 import sys
 
-def openGameActionScreen(players):
+def openGameActionScreen(red_team, green_team):
     pygame.init()
 
     # Screen size and window name
@@ -22,11 +22,6 @@ def openGameActionScreen(players):
 
     clock = pygame.time.Clock()
     running = True
-
-    # Split players into red and green teams
-    half = len(players) // 2
-    red_team = players[:half]
-    green_team = players[half:]
 
     while running:
         for event in pygame.event.get():
