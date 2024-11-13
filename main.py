@@ -36,7 +36,7 @@ def open_player_entry():
         cursor.execute("SELECT * FROM players;")
         rows = cursor.fetchall()
         # for row in rows:
-        #     print(row) ----> remove so entire player list isnt displaying
+         #   print(row) -----> take out so all players dont print upon startup  
 
     except Exception as error:
         print(f"Error connecting to PostgreSQL database: {error}")
@@ -148,7 +148,6 @@ def clear_player_entries():
     for widget in green_team_frame.winfo_children():
         widget.destroy()
 
-    # Optionally, you might want to repopulate the frames with empty placeholders
     for i in range(15):
         red_player_label = tk.Label(
             red_team_frame, text="ID: ---  Codename: ---  EquipNum: ---", bg="darkred", fg="white", font=("Arial", 12)
@@ -181,22 +180,41 @@ def search_or_add_player(player_id, red_team_frame, green_team_frame):
         player = cursor.fetchone()
 
         if player:
+            # Prompt for team selection
             team_choice = simpledialog.askstring("Team Selection", "Choose team for player (Red/Green):").strip().lower()
-            if team_choice == 'red':
-                red_team.append(player)
-            elif team_choice == 'green':
-                green_team.append(player)
+            if team_choice == 'red' or team_choice == 'green':
+                # Prompt for Equipment ID
+                equip_id = simpledialog.askinteger("Equipment ID", "Enter an Equipment ID (integer):")
+                
+                if equip_id is not None:  # valid integer is entered
+                    player_with_equip = (player[0], player[1], equip_id)
+                    if team_choice == 'red':
+                        red_team.append(player_with_equip)
+                    elif team_choice == 'green':
+                        green_team.append(player_with_equip)
+                    print(f"Player with Codename {player[1]} (ID: {player[0]}) added to {team_choice} team with Equipment ID {equip_id}")
         else:
+            # Player doesn't exist, add codename and team
             codename = simpledialog.askstring("Input", "Enter a codename for the new player:")
             if codename:
                 cursor.execute("INSERT INTO players (id, codename) VALUES (%s, %s);", (player_id, codename))
                 conn.commit()
                 player = (player_id, codename)
+                #print(f"New Player Added to database ID: {player_id}, Codename: {codename}")
+
+                # Prompt for team selection
                 team_choice = simpledialog.askstring("Team Selection", "Choose team for player (Red/Green):").strip().lower()
-                if team_choice == 'red':
-                    red_team.append(player)
-                elif team_choice == 'green':
-                    green_team.append(player)
+                if team_choice == 'red' or team_choice == 'green':
+                    # Prompt for Equipment ID
+                    equip_id = simpledialog.askinteger("Equipment ID", "Enter an Equipment ID (integer):")
+
+                    if equip_id is not None:  # Only proceed if a valid integer is entered
+                        player_with_equip = (player[0], player[1], equip_id)
+                        if team_choice == 'red':
+                            red_team.append(player_with_equip)
+                        elif team_choice == 'green':
+                            green_team.append(player_with_equip)
+                        print(f"Player with Codename {player[1]} (ID: {player[0]}) added to {team_choice} team with Equipment ID {equip_id}")
 
         populate_players(red_team_frame, green_team_frame)
 
@@ -220,9 +238,9 @@ def populate_players(red_team_frame, green_team_frame):
     for i in range(15):
         if i < len(red_team):
             player = red_team[i]
-            text = f"ID: {player[0]}  Codename: {player[1]}  EquipNum: ---"
+            text = f"ID: {player[0]}  Codename: {player[1]}  EquipNum: {player[2]}"
         else:
-            text = "ID: ---  Codename: ---  EquipNum: ---"  # Placeholder text
+            text = "ID: ---  Codename: ---  EquipNum: ---"  # Placeholder
 
         red_player_label = tk.Label(
             red_team_frame, text=text, bg="darkred", fg="white", font=("Arial", 12)
@@ -233,9 +251,9 @@ def populate_players(red_team_frame, green_team_frame):
     for i in range(15):
         if i < len(green_team):
             player = green_team[i]
-            text = f"ID: {player[0]}  Codename: {player[1]}  EquipNum: ---"
+            text = f"ID: {player[0]}  Codename: {player[1]}  EquipNum: {player[2]}"
         else:
-            text = "ID: ---  Codename: ---  EquipNum: ---"  # Placeholder text
+            text = "ID: ---  Codename: ---  EquipNum: ---"  # Placeholder
 
         green_player_label = tk.Label(
             green_team_frame, text=text, bg="darkgreen", fg="white", font=("Arial", 12)
