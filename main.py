@@ -35,8 +35,8 @@ def open_player_entry():
 
         cursor.execute("SELECT * FROM players;")
         rows = cursor.fetchall()
-        for row in rows:
-            print(row)
+        # for row in rows:
+        #     print(row) ----> remove so entire player list isnt displaying
 
     except Exception as error:
         print(f"Error connecting to PostgreSQL database: {error}")
