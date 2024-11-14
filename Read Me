@@ -8,6 +8,7 @@ Search each package below and find within the results
 -python3-pip
 -python3-pil
 -python3-pil.imagetk
+-python3-tk
 -python3-pygame
 
 When each package is found, click the box and then select mark for installation 
