@@ -6,6 +6,9 @@ import UDP_Client
 import GameActionScreen
 from GameActionScreen import openGameActionScreen
 import random
+import winsound
+
+winsound.PlaySound("m1", winsound.SND_FILENAME)
 
 # Store currently added players for this session
 current_players = []
