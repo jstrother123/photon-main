@@ -6,9 +6,15 @@ import UDP_Client
 import GameActionScreen
 from GameActionScreen import openGameActionScreen
 import random
-import winsound
+from playsound import playsound
 
-winsound.PlaySound("m1", winsound.SND_FILENAME)
+#random_num will be assigned a value that will be between 1 and 8
+# the print statement is to make sure that it is printing a random number
+random_num = random.randint(1,8)
+print(random_num)
+
+
+
 
 # Store currently added players for this session
 current_players = []
