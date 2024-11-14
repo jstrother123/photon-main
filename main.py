@@ -5,6 +5,7 @@ import psycopg2
 import UDP_Client
 import GameActionScreen
 from GameActionScreen import openGameActionScreen
+import random
 
 # Store currently added players for this session
 current_players = []
