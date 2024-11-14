@@ -10,6 +10,7 @@ Search each package below and find within the results
 -python3-pil.imagetk
 -python3-tk
 -python3-pygame
+-python3-psycopg2
 
 When each package is found, click the box and then select mark for installation 
 Once all of those are done, select apply 
