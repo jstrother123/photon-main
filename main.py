@@ -6,6 +6,7 @@ import UDP_Client
 import GameActionScreen
 from GameActionScreen import openGameActionScreen
 import random
+import threading
 from playsound import playsound
 
 #random_num will be assigned a value that will be between 1 and 8
