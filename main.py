@@ -14,7 +14,9 @@ random_num = random.randint(1,8)
 print(random_num)
 
 def playSound():
-    threading.Thread(target = playsound, args = ("./sounds/Track0{}.mp3".format(random_num),)).start()
+    # threading.Thread(target = playsound, args = ("./sounds/Track0{}.mp3".format(random_num),)).start()
+    threading.Thread(target = playsound, args = ("Track0{}.mp3".format(random_num),)).start()
+
 
 playSound()
 
