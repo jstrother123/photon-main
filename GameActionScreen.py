@@ -20,6 +20,15 @@ def openGameActionScreen(red_team, green_team):
     regFont = pygame.font.Font(None, 36)
     smallFont = pygame.font.Font(None, 24)
 
+    # Load the base picture
+    try:
+        basePic = pygame.image.load("base.png")
+        basePic = pygame.transform.scale(basePic, (20, 20)) # Adjust the picture to appropriate size
+    except FileNotFoundError:
+        print("Did not find the image, check the path.")
+        pygame.quit()
+        sys.exit()
+
     # Timer variables
     start_time = pygame.time.get_ticks()  # Timer start 
     countdown_time = 6 * 60 * 1000  # 6 minutes
@@ -95,3 +104,9 @@ def openGameActionScreen(red_team, green_team):
         clock.tick(60)
 
     pygame.quit() 
+
+def drawTheBase(screen, player_pos, base, x = 20, y = 7):
+    base_x = player_pos[0] - x
+    base_y = player_pos[1] - y
+    screen.blit(base, (base_x, base_y))
+
