@@ -1,10 +1,12 @@
 import socket
 import json
 import os
+#import GameActionScreen
+#from GameActionScreen import
 
 localIP = "127.0.0.1"
-#localPort = 20001
 localPort = 7501
+clientPort = 7500
 bufferSize = 1024
 msgFromServer = "Hello UDP Client, data has been received"
 bytesToSend = str.encode(msgFromServer)
@@ -13,7 +15,7 @@ bytesToSend = str.encode(msgFromServer)
 UDPServerSocket = socket.socket(family=socket.AF_INET, type=socket.SOCK_DGRAM)
 
 # Bind to address and ip
-UDPServerSocket.bind((localIP, localPort))
+UDPServerSocket.bind((localIP, clientPort))
 
 print("UDP server up and listening")
 
@@ -34,8 +36,8 @@ while (True):
     clientMsg = "Message from Client:{}".format(message)
     clientIP = "Client IP Address:{}".format(address)
 
-    print(clientMsg)
-    print(clientIP)
+    #print(clientMsg)
+    #print(clientIP)
 
     # Load the file already exist
     with open(file_path, 'r') as file:
@@ -48,18 +50,21 @@ while (True):
         player_id = player_info.get("id")
         player_name = player_info.get("name")
         player_equipNum = player_info.get("equipNum")
+        player_team = player_info.get("team")
+        #print(player_id, player_name, player_equipNum, player_team)
 
         # Insert or update the user's data
         players_data[player_name] = {
             "id": player_id,
-            "equipNum": player_equipNum
+            "equipNum": player_equipNum,
+            "team" : player_team
         }
 
         # Save the data after updated
         with open(file_path, 'w') as file:
             json.dump(players_data, file, indent=4)
 
-        print(f"Updated player data: {players_data}")
+        #print(f"Updated player data: {players_data}")
 
     except json.JSONDecodeError:
         print("Failed to decode JSON from client")
@@ -69,3 +74,6 @@ while (True):
 
     # Sending a reply to client
     UDPServerSocket.sendto(bytesToSend, address)
+
+# Close the server socket
+UDPServerSocket.close()
