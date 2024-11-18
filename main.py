@@ -12,7 +12,7 @@ from playsound import playsound
 #random_num will be assigned a value that will be between 1 and 8
 # the print statement is to make sure that it is printing a random number
 random_num = random.randint(1,8)
-print(random_num)
+#print(random_num)
 
 def playSound():
     # threading.Thread(target = playsound, args = ("./sounds/Track0{}.mp3".format(random_num),)).start()
@@ -208,6 +208,7 @@ def search_or_add_player(player_id, red_team_frame, green_team_frame):
                     elif team_choice == 'green':
                         green_team.append(player_with_equip)
                     print(f"Player with Codename {player[1]} (ID: {player[0]}) added to {team_choice} team with Equipment ID {equip_id}")
+                    UDP_Client.passInfo(player[0], player[1], equip_id, team_choice)
         else:
             # Player doesn't exist, add codename and team
             codename = simpledialog.askstring("Input", "Enter a codename for the new player:")
@@ -230,6 +231,7 @@ def search_or_add_player(player_id, red_team_frame, green_team_frame):
                         elif team_choice == 'green':
                             green_team.append(player_with_equip)
                         print(f"Player with Codename {player[1]} (ID: {player[0]}) added to {team_choice} team with Equipment ID {equip_id}")
+                        UDP_Client.passInfo(player[0], player[1], equip_id, team_choice)
 
         populate_players(red_team_frame, green_team_frame)
 
