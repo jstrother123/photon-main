@@ -3,6 +3,7 @@ from tkinter import simpledialog
 from PIL import Image, ImageTk
 import psycopg2
 import UDP_Client
+from UDP_Client import passInfo
 import GameActionScreen
 from GameActionScreen import openGameActionScreen
 import random
@@ -17,7 +18,6 @@ random_num = random.randint(1,8)
 def playSound():
     # threading.Thread(target = playsound, args = ("./sounds/Track0{}.mp3".format(random_num),)).start()
     threading.Thread(target = playsound, args = ("Track0{}.mp3".format(random_num),)).start()
-
 
 playSound()
 
@@ -91,7 +91,7 @@ def open_player_entry():
 
     # Store the entry in the player_entries list for easy clearing
     player_entries.append(id_entry)
-
+    
     # Add Player Button
     add_player_button = tk.Button(
         player_entry, text="Add Player", font=("Arial", 12), bg="black", fg="white",
@@ -116,7 +116,7 @@ def open_player_entry():
     # Bind F12 to clear entries and Fn + F5 to start the countdown
     player_entry.bind("<F12>", lambda event: clear_player_entries())
     player_entry.bind("<F5>", lambda event: start_countdown(30))
-
+    
     populate_players(red_team_frame, green_team_frame)
 
     player_entry.mainloop()
@@ -141,6 +141,7 @@ def start_countdown(seconds):
             seconds -= 1
             timer_label.after(1000, countdown)  # Continue countdown every second
         else:
+            passInfo(202) # Senting the start code
             timer_label.config(text="Game is about to begin!")
             countdown_window.after(1000, lambda: [countdown_window.destroy(), openGameActionScreen(red_team, green_team)])  # Close the window and open the game screen
 
@@ -208,7 +209,8 @@ def search_or_add_player(player_id, red_team_frame, green_team_frame):
                     elif team_choice == 'green':
                         green_team.append(player_with_equip)
                     print(f"Player with Codename {player[1]} (ID: {player[0]}) added to {team_choice} team with Equipment ID {equip_id}")
-                    UDP_Client.passInfo(player[0], player[1], equip_id, team_choice)
+                    UDP_Client.passInfo(equip_id)
+             
         else:
             # Player doesn't exist, add codename and team
             codename = simpledialog.askstring("Input", "Enter a codename for the new player:")
@@ -231,8 +233,8 @@ def search_or_add_player(player_id, red_team_frame, green_team_frame):
                         elif team_choice == 'green':
                             green_team.append(player_with_equip)
                         print(f"Player with Codename {player[1]} (ID: {player[0]}) added to {team_choice} team with Equipment ID {equip_id}")
-                        UDP_Client.passInfo(player[0], player[1], equip_id, team_choice)
-
+                        UDP_Client.passInfo(equip_id)
+                        
         populate_players(red_team_frame, green_team_frame)
 
     except Exception as error:
@@ -250,6 +252,7 @@ def populate_players(red_team_frame, green_team_frame):
         widget.destroy()
     for widget in green_team_frame.winfo_children():
         widget.destroy()
+
 
     # Display players in Red Team
     for i in range(15):
