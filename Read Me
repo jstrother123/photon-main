@@ -30,6 +30,8 @@ green team players are green and red team players are red
 Before running:
 pip install playsound
 
+***Delete gameAction.json before everytime run the program***
+
 TO RUN: 
 python3 main.py & python3 UDP_Server.py
 After putting in the player info, run the traffic genarator
