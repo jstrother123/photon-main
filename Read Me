@@ -1,0 +1,46 @@
+How to run project:
+
+To import packages below:
+In the virtual box -> Applications -> System -> Synaptic Package Manager 
+Enter Student password 
+Search each package below and find within the results
+-python3
+-python3-pip
+-python3-pil
+-python3-pil.imagetk
+-python3-tk
+-python3-pygame
+-python3-psycopg2
+
+When each package is found, click the box and then select mark for installation 
+Once all of those are done, select apply 
+
+Downloaded:
+-python3
+-python3-pip
+-python3-pil
+-python3-pil.imagetk
+-python3-pygame
+-import pillow, tk (tkinter), and pygame
+For start up screen: python3 main.py to get the player entry screen and start screen to appear, and get the main loop running. 
+
+The players entered into the table will be split in half for the game so that the teams are even, which is shwon in the play action display,
+green team players are green and red team players are red
+
+Before running:
+pip install playsound
+
+***Delete gameAction.json before everytime run the program***
+
+TO RUN: 
+python3 main.py & python3 UDP_Server.py
+After putting in the player info, run the traffic genarator
+python3 python_trafficgenarator_v2.py
+
+
+Student Name	 |    GitHub Name
+-----------------|------------------
+Chloe Shepherd	 |    chloeshepherdd
+Yi Wang	         |    yyyyyyyyyi09
+Sandy Wahba      |   	sandy357w
+Michaela Pascall |    michaelapascall
