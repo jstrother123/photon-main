@@ -53,6 +53,10 @@ while True:
 	else:
 		message = str(greenplayer) + ":" + str(redplayer)
 		
+	# after 5 iterations, send friendly fire hit
+	if counter == 5:
+		message=(str(red1) + ":" + str(red2))
+		
 	# after 10 iterations, send base hit
 	if counter == 10:
 		message = str(redplayer) + ":43"
