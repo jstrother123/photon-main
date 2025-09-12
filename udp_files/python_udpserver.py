@@ -1,6 +1,6 @@
 import socket
 
-localIP     = "127.0.0.1"
+localIP     = "0.0.0.0"
 localPort   = 7501
 bufferSize  = 1024
 msgFromServer       = "Hello UDP Client"
@@ -29,3 +29,4 @@ while(True):
 
     # Sending a reply to client
     UDPServerSocket.sendto(bytesToSend, address)
+
