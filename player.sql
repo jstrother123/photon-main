@@ -1,4 +1,4 @@
---Create table
+--Create table  (this file is no longer needed for project)
 CREATE TABLE player (
   id INT,
   codename VARCHAR(30)
