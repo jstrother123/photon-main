@@ -3,7 +3,7 @@ import random
 import time
 
 bufferSize  = 1024
-serverAddressPort   = ("127.0.0.1", 7500)
+serverAddressPort   = ("0.0.0.0", 7500)
 clientAddressPort   = ("127.0.0.1", 7501)
 
 
@@ -79,3 +79,4 @@ while True:
 	time.sleep(random.randint(1,3))
 	
 print("program complete")
+
