@@ -4,7 +4,7 @@ from psycopg2 import sql
 # Define connection parameters
 connection_params = {
     'dbname': 'photon',
-    'user': 'student',
+    #'user': 'student',
     #'password': 'student',
     #'host': 'localhost',
     #'port': '5432'
