@@ -31,8 +31,7 @@ print ("waiting for start from game_software")
 received_data = ' '
 while received_data != '202':
 	received_data, address = UDPServerSocketReceive.recvfrom(bufferSize)
-	#received_data = received_data.decode('utf-8')
-	received_data = message.rstrip(b'\x00').decode('utf-8').strip();  # remove extra chars on input
+	received_data = received_data.decode('utf-8').rstrip('\0')
 	print ("Received from game software: " + received_data)
 print ('')
 
@@ -66,17 +65,13 @@ while True:
 	if counter == 20:
 		message = str(greenplayer) + ":53"
 		
-	# add null character to interface with actual c program on pods
-	message = (str(message) + '\0').encode('utf-8')
+	print("transmitting to game: " + message)
 	
-	print("transmitting to game: " + message)	
-	
-	UDPClientSocketTransmit.sendto(str.encode(str(message)), clientAddressPort)
+	UDPClientSocketTransmit.sendto((message + '\0').encode('utf-8'), clientAddressPort)
 	# receive answer from game softare
 	
 	received_data, address = UDPServerSocketReceive.recvfrom(bufferSize)
-	#received_data = received_data.decode('utf-8')
-	received_data = message.rstrip(b'\x00').decode('utf-8').strip();  # remove extra chars on input
+	received_data = received_data.decode('utf-8').rstrip('\0')
 		
 	print ("Received from game software: " + received_data)
 	print ('')
@@ -84,8 +79,7 @@ while True:
 	# if we have friendly fire, do a second receive
 	if friendly_fire == 1:
 		received_data, address = UDPServerSocketReceive.recvfrom(bufferSize)
-		received_data = message.rstrip(b'\x00').decode('utf-8').strip();  # remove extra chars on input
-		#received_data = received_data.decode('utf-8')
+		received_data = received_data.decode('utf-8').rstrip('\0')
 		friendly_fire = 0
 		print ("Received from game software: " + received_data)
 		print ('')
